@@ -1,2 +1,2 @@
-# JS-Clock
-Cool live clock built in JS!
+# JS Time Clock
+Time Clock for Project 42
