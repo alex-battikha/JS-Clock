@@ -12,17 +12,32 @@ var periodAMPM;
 
 var odibeeFont;
 
+var blindingLightsSong, slowHandsSong, uptownFunkSong, watermelonSugarSong;
+
+var songPlaying;
+
+function preload() {
+  blindingLightsSong = createAudio("assets/music/blinding-lights.mp3");
+  slowHandsSong = createAudio("assets/music/slow-hands.mp3");
+  uptownFunkSong = createAudio("assets/music/uptown-funk.mp3");
+  watermelonSugarSong = createAudio("assets/music/watermelon-sugar.mp3");
+}
+
 function setup() {
   createCanvas(800, 800);
 
-  odibeeFont = loadFont("fonts/OdibeeSans-Regular.ttf");
+  odibeeFont = loadFont("assets/fonts/OdibeeSans-Regular.ttf");
+
+  songPlaying = false;
 }
 
 function draw() {
-  background(0);
-
-  // translate(width/2, height/2);
-  // rotate(270);
+  if(songPlaying === true) {
+    background(random(0, 255), random(0, 255), random(0, 255));
+  }
+  else {
+    background(0);
+  }
   
   //Using predefined functions from p5.js to initalize the hour, minute, and second variables
   hr = hour();
@@ -33,6 +48,13 @@ function draw() {
   dy = day();
   mnt = month();
   yr = year();
+
+  //informing using to press any key in order to play music
+  fill("white");
+  textFont(odibeeFont);
+  textSize(24);
+  text("Press any key to play/pause music!", 515, 740);
+  text("By pressing any key you also alternate between backgrounds colors!", 275, 780);
 
   //Styling to display time & date
   textFont(odibeeFont);
@@ -56,9 +78,14 @@ function draw() {
 
   text("The time is - " + hr%12 + ":" + mn + ":" + sc + " " + periodAMPM, 25, 100);
 
+  //add music in the background
+  //musicPlayer();
+
+  //displays the arcs for the clock
   displayClock();
 
-  //add sound effects/music in the background
+  //displayst the clock's hands
+  clockHands();
 }
 
 function displayClock() {
@@ -90,3 +117,51 @@ function displayClock() {
   stroke(0, 0, 255);
   arc(-40, 0, 400, 400, 0, scMap);
 }
+
+function clockHands() {
+  //hr clock hand
+  stroke(255);
+  line(-40, 0, 50*cos(hrMap)-40, 60*sin(hrMap));
+
+  //mn clock hand
+  stroke(0, 255, 255);
+  line(-40, 0, 85*cos(mnMap)-40, 85*sin(mnMap));
+
+  //sc clock hand
+  stroke(0, 0, 255);
+  line(-40, 0, 120*cos(scMap)-40, 120*sin(scMap));
+}
+
+function keyPressed() {
+  if(songPlaying === false) {
+    uptownFunkSong.play();
+    songPlaying = true;
+    previouslyPlayed = true;
+  }
+  else if(songPlaying === true) {
+    uptownFunkSong.stop();
+    songPlaying = false;
+
+    background(0);
+  }
+
+  // while(songPlaying === true) {
+  //   background(random(0, 255), random(0, 255), random(0, 255));
+  // }
+
+  // var songArray = [blindingLightsSong, slowHandsSong, uptownFunkSong, watermelonSugarSong];
+
+  // for(var i = 0; i < songArray.length; i++) {
+  //   if(keyCode === UP_ARROW) {
+  //     songArray[i].play();
+  //   }
+  //   else if(songArray[i].isPlaying && keyCode === UP_ARROW) {
+  //     songArray[i].stop();
+  //   }
+  // }
+
+}
+
+// function mouseClicked() {
+//   uptownFunkSong.play();
+// }
